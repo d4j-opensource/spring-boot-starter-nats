@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-   <parent>
+    <parent>
         <groupId>org.kasource</groupId>
         <artifactId>java-qa-pom</artifactId>
         <version>0.9</version>
     </parent>
     <artifactId>spring-boot-starter-nats</artifactId>
-    <groupId>com.novaintechs</groupId>
+    <groupId>com.github.huynhduy9988</groupId>
     <version>0.9.2</version>
     <packaging>jar</packaging>
 
     <name>NATS for Spring Boot</name>
     <description>NATS for Spring Boot</description>
-
+    <url>https://github.com/huynhduy9988/spring-boot-starter-nats</url>
 
     <properties>
         <spring-boot.version>2.6.6</spring-boot.version>
@@ -22,20 +23,38 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
-    <scm>
-        <connection>${scm.connection.url}</connection>
-        <developerConnection>${scm.connection.url}</developerConnection>
-        <url>${scm.url}</url>
-        <tag>HEAD</tag>
-    </scm>
-
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
+            <name>The Apache Software License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Duy Huynh</name>
+            <email>duy.hv@novaintechs.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/huynhduy9988/spring-boot-starter-nats.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/huynhduy9988/spring-boot-starter-nats.git
+        </developerConnection>
+        <url>https://github.com/huynhduy9988/spring-boot-starter-nats/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+
 
     <dependencyManagement>
         <dependencies>
@@ -147,8 +166,10 @@
                             <version>${jacoco.version}</version>
                             <configuration>
                                 <excludes>
-                                    <exclude>org/kasource/spring/nats/config/**/*</exclude> <!-- Is tested by integration tests -->
-                                    <exclude>org/kasource/spring/nats/autoconfigure/**/*</exclude> <!-- Is tested by integration tests -->
+                                    <exclude>org/kasource/spring/nats/config/**/*
+                                    </exclude> <!-- Is tested by integration tests -->
+                                    <exclude>org/kasource/spring/nats/autoconfigure/**/*
+                                    </exclude> <!-- Is tested by integration tests -->
                                 </excludes>
                             </configuration>
                         </plugin>
@@ -168,6 +189,74 @@
                 </sonar.exclusions>
             </properties>
         </profile>
+        <profile>
+            <id>ci-cd</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- Prevent gpg from using pinentry programs. Fixes: gpg: signing
+                                        failed: Inappropriate ioctl for device -->
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
