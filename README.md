@@ -12,11 +12,11 @@ This project enables Spring Boot auto configuration for [NATS](https://nats.io/)
 
 Simply add the dependency to your Spring Boot project and you are good to go.
 ```
- <dependency>
-    <groupId>org.kasource</groupId>
-    <artifactId>spring-boot-starter-nats</artifactId>
-    <version>${spring-boot.nats.starter.version}</version>
-</dependency>
+   <dependency>
+       <groupId>io.github.d4j-opensource</groupId>
+       <artifactId>spring-boot-starter-nats</artifactId>
+       <version>${spring-boot-starter-nats-version}</version>
+   </dependency>
 ```
 
 The auto configuration will try to connect to the default NATS port (4222) on localhost.
